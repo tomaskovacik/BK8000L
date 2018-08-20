@@ -8,7 +8,7 @@ BK8000L (F-6188 module at least) have AT command control support, supported comm
 
 <a href="https://www.arduino.cc/en/Guide/Libraries">Information about using libraries on arduino site</a>
 
-Copy content of this repository directory or just this two files: <a href="https://github.com/tomaskovacik/arduino/blob/master/libraries/BK8000L/BK8000L.cpp">BK8000L.cpp</a>, <a href="https://github.com/tomaskovacik/arduino/blob/master/libraries/BK8000L/BK8000L.h">BK8000L.h</a> to ~/Arduino/libraries/BK8000L/ directory (if did not exist, create one). Open new project in arduino and use this code, of check code in examples directory <a href="https://github.com/tomaskovacik/arduino/blob/master/libraries/BK8000L/examples/BK8000L/BK8000L.ino">BK8000L.ino</a>:
+Copy content of this repository directory or just this two files: <a href="https://github.com/tomaskovacik/arduino/blob/master/libraries/BK8000L/BK8000L.cpp">BK8000L.cpp</a>, <a href="https://github.com/tomaskovacik/arduino/blob/master/libraries/BK8000L/BK8000L.h">BK8000L.h</a> to ~/Arduino/libraries/BK8000L/ directory (if did not exist, create one). Open new project in arduino and use this code, or check code in examples directory <a href="https://github.com/tomaskovacik/arduino/blob/master/libraries/BK8000L/examples/BK8000L/BK8000L.ino">BK8000L.ino</a>:
 
 ```c
 #include "BK8000L.h"
