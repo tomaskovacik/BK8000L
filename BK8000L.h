@@ -98,8 +98,9 @@ class BK8000L
 #else
     BK8000L(NewSoftSerial  *ser, uint8_t resetPin);
 #endif
-#endif
+#else
     BK8000L(HardwareSerial *ser, uint8_t resetPin);
+#endif
     void begin(uint32_t baudrate = 9600);
     ~BK8000L();
 
@@ -153,12 +154,13 @@ class BK8000L
 
 #if  defined(USE_SW_SERIAL)
 #if ARDUINO >= 100
-    SoftwareSerial *btSwSerial;
+    SoftwareSerial *btSerial;
 #else
-    NewSoftSerial  *btSwSerial;
+    NewSoftSerial  *btSerial;
 #endif
+#else
+    HardwareSerial *btSerial;
 #endif
-    HardwareSerial *btHwSerial;
 
 };
 

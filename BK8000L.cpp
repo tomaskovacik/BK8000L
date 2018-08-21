@@ -21,17 +21,11 @@ BK8000L::BK8000L(SoftwareSerial *ser, uint8_t resetPin)
 #else
 BK8000L::BK8000L(NewSoftSerial *ser, uint8_t resetPin)
 #endif
+#else
+BK8000L::BK8000L(HardwareSerial *ser, uint8_t resetPin)
 #endif
 {
-#if defined(USE_SW_SERIAL)
-  btHwSerial = NULL;
-  btSwSerial = ser;
-  _reset=resetPin;
-}
-#endif
-BK8000L::BK8000L(HardwareSerial *ser, uint8_t resetPin) {
-  btSwSerial = NULL;
-  btHwSerial = ser;
+  btSerial = ser;
   _reset=resetPin;
 }
 
@@ -42,13 +36,7 @@ BK8000L::~BK8000L() {
 }
 
 void BK8000L::begin(uint32_t baudrate) {
-#if defined(USE_SW_SERIAL)
-  if (btSwSerial)
-    btSwSerial->begin(baudrate);
-  else
-#endif
-    btHwSerial->begin(baudrate);
- 
+  btSerial->begin(baudrate);
   pinMode(_reset,OUTPUT);
   BK8000L::resetHigh();
 }
@@ -220,10 +208,8 @@ uint8_t BK8000L::getNextEventFromBT() {
 
   char c;
   String receivedString = "";
-
-#if defined(USE_SW_SERIAL)
-  while (btSwSerial -> available() > 0) {
-    c = (btSwSerial -> read());
+  while (btSerial -> available() > 0) {
+    c = (btSerial -> read());
     //Serial.write(c);Serial.print(" ");Serial.println(c,HEX);
     if (c == 0xD) {
       if (receivedString == "") { //nothing before enter was received
@@ -237,46 +223,20 @@ uint8_t BK8000L::getNextEventFromBT() {
     //append received buffer with received character
     receivedString = receivedString + c;  // cose += c did not work ...
   }
-
-#else
-  while (btHwSerial -> available() > 0) {
-    c = (btHwSerial -> read());
-    //Serial.write(c);Serial.print(" ");Serial.println(c,HEX);
-    if (c == 0xD) {
-      if (receivedString == "") { //nothing before enter was received
-        BK8000L::getNextEventFromBT();
-      }
-      receivedString = receivedString + c;
-      decodeReceivedString(receivedString);
-      break;
-    }
-    //append received buffer with received character
-    receivedString = receivedString + c;  // cose += c did not work ...
-#endif
 }
 
 uint8_t BK8000L::sendData(String cmd) {
   String Command = "AT+" + cmd + "\r\n";
   DBG("sending " + Command);
   delay(100);
-#if defined(USE_SW_SERIAL)
-  if (btSwSerial)
-    btSwSerial -> print(Command);
-  else
-#endif
-    btHwSerial -> print(Command);
+  btSerial -> print(Command);
 }
 
 uint8_t BK8000L::sendAPTData(String cmd) {
   String Command = "APT+" + cmd + "\r\n";
   DBG("sending APT " + Command);
   delay(100);
-#if defined(USE_SW_SERIAL)
-  if (btSwSerial)
-    btSwSerial -> print(Command);
-  else
-#endif
-    btHwSerial -> print(Command);
+  btSerial -> print(Command);
 }
 
 
