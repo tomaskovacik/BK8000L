@@ -387,7 +387,7 @@ uint8_t BK8000L::getMusicStatus() { //  Bluetooth playback status inquiry   AT+M
   BK8000L::getNextEventFromBT();
 }
 
-uint8_t BK8000L::getHFPstatus() { //Bluetooth inquiry HFP status  AT+MY\r\n   disconnect:"M0\r\n", connection:"M1\r\n", Caller: "M2\r\n", Outgoing: "M3\r\n", calling:"M4\r\n"
+uint8_t BK8000L::getHFPStatus() { //Bluetooth inquiry HFP status  AT+MY\r\n   disconnect:"M0\r\n", connection:"M1\r\n", Caller: "M2\r\n", Outgoing: "M3\r\n", calling:"M4\r\n"
   BK8000L::sendData(BK8000L_GET_HFP_STATUS);
   BK8000L::getNextEventFromBT();
 }

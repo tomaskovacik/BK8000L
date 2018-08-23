@@ -138,7 +138,7 @@ class BK8000L
     uint8_t getAddress();
     uint8_t getSoftwareVersion();
     uint8_t getMusicStatus();
-    uint8_t getHFPstatus();
+    uint8_t getHFPStatus();
     void resetModule();
 
   private:

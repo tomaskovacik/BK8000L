@@ -32,6 +32,6 @@ getPinCode	KEYWORD2
 getAddress	KEYWORD2
 getSoftwareVersion	KEYWORD2
 getMusicStatus	KEYWORD2
-getHFPstatus	KEYWORD2
+getHFPStatus	KEYWORD2
 resetModule	KEYWORD2
 
