@@ -191,7 +191,7 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
 	BK8000L::decodeReceivedString(receivedString.substring(1));
     break;
 }
-return 1;
+return 0;
 }
 
 String BK8000L::returnCallerID(String receivedString) {
