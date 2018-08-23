@@ -179,7 +179,6 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
           break;
         case 'K':
 	  if (PowerState == ShutdownInProgress) PowerState=Off;
-          return 1;
           break;
       }
       }
@@ -191,7 +190,6 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
 	BK8000L::decodeReceivedString(receivedString.substring(1));
     break;
 }
-return 0;
 }
 
 String BK8000L::returnCallerID(String receivedString) {
