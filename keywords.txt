@@ -19,7 +19,7 @@ shutdownBT	KEYWORD2
 switchInput	KEYWORD2
 openPhoneVoice	KEYWORD2
 memoryClear	KEYWORD2
-languageSetNumber KEYWORD2
+languageSetNumber	KEYWORD2
 musicTogglePlayPause	KEYWORD2
 musicStop	KEYWORD2
 musicNextTrack	KEYWORD2
