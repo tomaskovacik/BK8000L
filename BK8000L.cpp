@@ -32,7 +32,8 @@ BK8000L::BK8000L(HardwareSerial *ser, uint8_t resetPin)
 /*
    Destructor
 */
-BK8000L::~BK8000L() {
+BK8000L::~BK8000L() 
+ btSerial->end();
 }
 
 void BK8000L::begin(uint32_t baudrate) {
