@@ -26,7 +26,7 @@ void getInitStates() {
   BT.getAddress();
   BT.getSoftwareVersion();
   BT.getMusicStatus();
-  BT.getHFPstatus();
+  BT.getHFPStatus();
 }
 
 void setup() {
@@ -246,7 +246,7 @@ void loop() {
         BT.getMusicStatus();
         break;
       case 'y':
-        BT.getHFPstatus();
+        BT.getHFPStatus();
         break;
       case 'z':
         BT.resetModule();
