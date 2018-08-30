@@ -90,7 +90,7 @@ musicRewind(); //rewind current track
 
 getName(); //get bluetooth module name
 
-getConnectioStatus(); //get BT connection status 
+getConnectionStatus(); //get BT connection status 
 
 getPinCode(); //get pin
 
