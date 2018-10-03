@@ -4,6 +4,41 @@ This directory contain all files needed to support A2DP bluetooth module based o
 
 BK8000L (F-6188 module at least) have AT command control support, supported commands are described <a href="https://github.com/tomaskovacik/kicad-library/tree/master/library/datasheet/F-6188_BK8000L">here</a>
 
+# how to connect BK8000L
+
+## directly to computer
+
+this is for testing if your module has serial interface enabled:
+
+BK8000L|computer(USB2serial for example)
+-------|-------
+   RX  |  TX
+   TX  |  RX
+  GND  |  GND
+ VBAT  |  via diode to 5V
+
+## arduino using software serial (UNO, nano..)
+
+BK8000L|computer(USB2serial for example)
+-------|-------
+   RX  |  7 (1st parameter of SoftwareSerial in example)
+   TX  |  6 (2nd parameter of SoftwareSerial in example)
+ RESET |  5 (defined as resetBTpin in example)
+  GND  |  GND
+ VBAT  |  via diode to 5V
+
+
+## arduino using harware serial (mega ..)
+
+BK8000L|computer(USB2serial for example)
+-------|-------
+   RX  |  TX1 (if using Serial1)
+   TX  |  RX1 (if using Serial1)
+ RESET |  5 (defined as resetBTpin in example)
+  GND  |  GND
+ VBAT  |  via diode to 5V
+
+
 # how to use it
 
 <a href="https://www.arduino.cc/en/Guide/Libraries">Information about using libraries on arduino site</a>
