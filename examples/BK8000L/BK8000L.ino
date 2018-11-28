@@ -8,7 +8,6 @@
 
 
 #include "BK8000L.h"
-#include <SoftwareSerial.h>
 
 uint8_t BTState;
 uint8_t CallState;
