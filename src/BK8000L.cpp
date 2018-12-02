@@ -220,7 +220,6 @@ String BK8000L::returnBtModuleName(String receivedString) {
 }
 
 uint8_t BK8000L::getNextEventFromBT() {
-
   char c;
   String receivedString = "";
   while (btSerial -> available() > 0) {
@@ -230,7 +229,7 @@ uint8_t BK8000L::getNextEventFromBT() {
 #if defined DEBUG
         DBG(F("received only empty string\n running again myself...\n"));
 #endif
-        BK8000L::getNextEventFromBT();
+        return BK8000L::getNextEventFromBT();
       }
       receivedString = receivedString + c;
       decodeReceivedString(receivedString);
@@ -242,6 +241,7 @@ uint8_t BK8000L::getNextEventFromBT() {
 }
 
 uint8_t BK8000L::sendData(String cmd) {
+  BK8000L::getNextEventFromBT();
   String Command = "AT+" + cmd + "\r\n";
 #if defined DEBUG
   DBG("sending " + Command);
@@ -251,6 +251,7 @@ uint8_t BK8000L::sendData(String cmd) {
 }
 
 uint8_t BK8000L::sendAPTData(String cmd) {
+  BK8000L::getNextEventFromBT();
   String Command = "APT+" + cmd + "\r\n";
 #if defined DEBUG
   DBG("sending APT " + Command);
@@ -263,154 +264,153 @@ uint8_t BK8000L::sendAPTData(String cmd) {
 uint8_t BK8000L::pairingInit() { //  pairing   AT+CA\r\n
   BK8000L::sendData(BK8000L_PAIRING_INIT);
   BTState=Pairing;
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::pairingExit() {//  Exit pairing  AT+CB\r\n
   BK8000L::sendData(BK8000L_PAIRING_EXIT);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::connectLastDevice() {//  The last paired device connected  AT+CC\r\n     what this should do? connect to last connected device?
   BK8000L::sendData(BK8000L_CONNECT_LAST_DEVICE);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::disconnect() {//  disconnect  AT+CD\r\n
   BK8000L::sendData(BK8000L_DISCONNECT);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::callAnsware() { //  Answer the call   AT+CD\r\n
   BK8000L::sendData(BK8000L_CALL_ANSWARE);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::callReject() { //  reject a call   AT+CF\r\n
   BK8000L::sendData(BK8000L_CALL_REJECT);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::callHangUp() { //  Hang up   AT+CG\r\n
   BK8000L::sendData(BK8000L_CALL_HANGUP);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::callRedial() { //  redial  AT+CH\r\n     last called number?
   BK8000L::sendData(BK8000L_CALL_REDIAL);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::volumeUp() { //  volume up   AT+CK\r\n
   BK8000L::sendData(BK8000L_VOLUME_UP);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::volumeDown() { //  volume down   AT+CL\r\n
   BK8000L::sendData(BK8000L_VOLUME_DOWN);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::languageSwitch() { //  Multi-language switch   AT+CM\r\n
   BK8000L::sendData(BK8000L_LANGUAGE_SWITCH);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::channelSwitch() { //  Channel switching (invalid)   AT+CO\r\n     to be tested
   BK8000L::sendData(BK8000L_CHANNEL_SWITCH);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::shutdownBT() { //  Shutdown  AT+CP\r\n
   BK8000L::sendData(BK8000L_SHUTDOWN);
   PowerState = ShutdownInProgress; 
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::switchInput() { //  Enter the test mode   AT+CT\r\n
   BK8000L::sendData(BK8000L_SWITCH_INPUT);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::openPhoneVoice() { //  Open phone VOICE  AT+CV\r\n
   BK8000L::sendData(BK8000L_OPEN_PHONE_VOICE);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::memoryClear() { //  Memory clear  AT+CZ\r\n
   BK8000L::sendData(BK8000L_MEMORY_CLEAR);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::languageSetNumber(uint8_t number) { //  Number:( 0-4 )  Set the number of multi-lingual   AT+CMM4\r\n
   String command = BK8000L_LANGUAGE_SET_NUMBER + (String)number;
   BK8000L::sendData(command);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::musicTogglePlayPause() { //  Music Play / Pause  AT+MA\r\n
   BK8000L::sendData(BK8000L_MUSIC_TOGGLE_PLAY_PAUSE);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::musicStop() { //  The music stops   AT+MC\r\n
   BK8000L::sendData(BK8000L_MUSIC_STOP);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::musicNextTrack() { //  next track  AT+MD\r\n
   BK8000L::sendData(BK8000L_MUSIC_NEXT_TRACK);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::musicPreviousTrack() { //  previous track  AT+ME\r\n
   BK8000L::sendData(BK8000L_MUSIC_PREVIOUS_TRACK);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::musicFastForward() { //  fast forward  AT+MF\r\n     test how does this exacly works?
   BK8000L::sendData(BK8000L_MUSIC_FAST_FORWARD);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::musicRewind() { //  rewind  AT+MH\r\n     test how does this exacly works?
   BK8000L::sendData(BK8000L_MUSIC_REWIND);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::getName() { //  Query bluetooth name  AT+MN\r\n   NA:BK8000L\r\n  test this
   BK8000L::sendData(BK8000L_GET_NAME);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::getConnectionStatus() { //  Bluetooth connection status inquiry   AT+MO\rn  connection succeeded:" C1\r\n"no connection:"C0\r\n"
   BK8000L::sendData(BK8000L_GET_CONNECTION_STATUS);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::getPinCode() {           //  PIN Code query  AT+MP\r\n   PN:0000\r\n
   BK8000L::sendData(BK8000L_GET_PIN_CODE);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::getAddress() { //  Query bluetooth address   AT+MR\r\n   AD:111111111111\r\n
   BK8000L::sendData(BK8000L_GET_ADDRESS);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::getSoftwareVersion() { //  Query software version  AT+MQ\r\n   XZX-V1.2\r\n
   BK8000L::sendData(BK8000L_GET_SOFTWARE_VERSION);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::getMusicStatus() { //  Bluetooth playback status inquiry   AT+MV\r\n   Play: "MB\r\n", time out:"MA\r\n", disconnect:" M0\r\n"
   BK8000L::sendData(BK8000L_MUSIC_GET_STATUS);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
 
 uint8_t BK8000L::getHFPStatus() { //Bluetooth inquiry HFP status  AT+MY\r\n   disconnect:"M0\r\n", connection:"M1\r\n", Caller: "M2\r\n", Outgoing: "M3\r\n", calling:"M4\r\n"
   BK8000L::sendData(BK8000L_GET_HFP_STATUS);
-  BK8000L::getNextEventFromBT();
+  return BK8000L::getNextEventFromBT();
 }
-
 
