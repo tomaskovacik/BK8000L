@@ -52,7 +52,9 @@ void BK8000L::resetHigh(){
 }
 
 void BK8000L::resetModule(){
+#if defined DEBUG
  DBG(F("reseting module"));
+#endif
  resetLow();
  delay(100);
  resetHigh();
@@ -62,22 +64,30 @@ void BK8000L::resetModule(){
    debug output
 */
 void BK8000L::DBG(String text) {
-  if (DEBUG) /*return "DBG: ");*/ Serial.print(text);;
+#if defined DEBUG
+  Serial.print(text);;
+#endif
 }
 
 uint8_t BK8000L::decodeReceivedString(String receivedString) {
+#if defined DEBUG
   DBG(receivedString);
   DBG(F("\n"));
+#endif
   switch (receivedString[0]) {
     case 'A':
       {
       PowerState=On;
         if (receivedString[1] == 'D' && receivedString[2] == ':') {
             BT_ADDR = receivedString.substring(5);
+#if defined DEBUG
             DBG(F("BT ADDRESS: ")); DBG(BT_ADDR);
+#endif
         }
         if (receivedString[1] == 'P' && receivedString[2] == 'R' && receivedString[2] == '+'){
+#if defined DEBUG
             DBG(F("SPP data received: ")); DBG(receivedString.substring(5));
+#endif
 	} 
       }
       break;
@@ -192,15 +202,20 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
 	BK8000L::decodeReceivedString(receivedString.substring(1));
     break;
 }
+return 1;
 }
 
 String BK8000L::returnCallerID(String receivedString) {
+#if defined DEBUG
 	DBG(F("Calling: ")); DBG(receivedString.substring(4,(receivedString.length() - 2))); DBG(F("\n"));
+#endif
 	return receivedString.substring(4,(receivedString.length() - 2)); //start at 4 cose: IR-"+123456789" or PR-"+123456789" and one before end to remove " and \0
 }
 
 String BK8000L::returnBtModuleName(String receivedString) {
+#if defined DEBUG
 	DBG(F("Bluetooth module name: ")); DBG(receivedString.substring(4)); DBG(F("\n"));
+#endif
 	return receivedString.substring(4);
 }
 
@@ -210,10 +225,11 @@ uint8_t BK8000L::getNextEventFromBT() {
   String receivedString = "";
   while (btSerial -> available() > 0) {
     c = (btSerial -> read());
-    //Serial.write(c);Serial.print(" ");Serial.println(c,HEX);
     if (c == 0xD) {
       if (receivedString == "") { //nothing before enter was received
-        //DBG(F("received only empty string\n running again myself...\n"));
+#if defined DEBUG
+        DBG(F("received only empty string\n running again myself...\n"));
+#endif
         BK8000L::getNextEventFromBT();
       }
       receivedString = receivedString + c;
@@ -227,14 +243,18 @@ uint8_t BK8000L::getNextEventFromBT() {
 
 uint8_t BK8000L::sendData(String cmd) {
   String Command = "AT+" + cmd + "\r\n";
+#if defined DEBUG
   DBG("sending " + Command);
+#endif
   delay(100);
   btSerial -> print(Command);
 }
 
 uint8_t BK8000L::sendAPTData(String cmd) {
   String Command = "APT+" + cmd + "\r\n";
+#if defined DEBUG
   DBG("sending APT " + Command);
+#endif
   delay(100);
   btSerial -> print(Command);
 }
@@ -323,7 +343,6 @@ uint8_t BK8000L::memoryClear() { //  Memory clear  AT+CZ\r\n
 }
 
 uint8_t BK8000L::languageSetNumber(uint8_t number) { //  Number:( 0-4 )  Set the number of multi-lingual   AT+CMM4\r\n
-  //DBG((String)number);
   String command = BK8000L_LANGUAGE_SET_NUMBER + (String)number;
   BK8000L::sendData(command);
   BK8000L::getNextEventFromBT();

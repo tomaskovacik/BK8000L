@@ -18,7 +18,7 @@
 
 #define USE_SW_SERIAL 1
 
-#define DEBUG 1 
+//#define DEBUG
 
 //cmds definitions:
 #define BK8000L_PAIRING_INIT "CA"            //  pairing   AT+CA\r\n     
