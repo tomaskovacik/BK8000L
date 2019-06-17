@@ -51,9 +51,19 @@ void BK8000L::resetHigh(){
  digitalWrite(_reset,HIGH);
 }
 
+/*
+   debug output
+*/
+#if defined DEBUG
+void BK8000L::DBG(String text) {
+  Serial.print(text);;
+}
+#endif
+
+
 void BK8000L::resetModule(){
 #if defined DEBUG
- DBG(F("reseting module"));
+ DBG(F("Reseting module"));
 #endif
  resetLow();
  delay(100);
@@ -244,7 +254,7 @@ uint8_t BK8000L::sendData(String cmd) {
   BK8000L::getNextEventFromBT();
   String Command = "AT+" + cmd + "\r\n";
 #if defined DEBUG
-  DBG("sending " + Command);
+  DBG(F("Sending "));DBG(Command);
 #endif
   delay(100);
   btSerial -> print(Command);
@@ -254,7 +264,7 @@ uint8_t BK8000L::sendAPTData(String cmd) {
   BK8000L::getNextEventFromBT();
   String Command = "APT+" + cmd + "\r\n";
 #if defined DEBUG
-  DBG("sending APT " + Command);
+  DBG(F("Sending APT "));DBG(Command);
 #endif
   delay(100);
   btSerial -> print(Command);

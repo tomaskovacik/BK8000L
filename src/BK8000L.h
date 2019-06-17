@@ -147,7 +147,9 @@ class BK8000L
     String returnBtModuleName(String receivedString); //return module name between : and \0
     String returnCallerID(String receivedString); //return number between ""
     uint8_t decodeReceivedString(String receivedString);
+#if defined DEBUG
     void DBG(String text);
+#endif
     void resetHigh();
     void resetLow();
 
