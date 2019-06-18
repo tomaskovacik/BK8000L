@@ -73,11 +73,11 @@ void BK8000L::resetModule(){
 /*
    debug output
 */
-void BK8000L::DBG(String text) {
 #if defined DEBUG
+void BK8000L::DBG(String text) {
   Serial.print(text);;
-#endif
 }
+#endif
 
 uint8_t BK8000L::decodeReceivedString(String receivedString) {
 #if defined DEBUG
