@@ -70,15 +70,6 @@ void BK8000L::resetModule(){
  resetHigh();
 }
 
-/*
-   debug output
-*/
-#if defined DEBUG
-void BK8000L::DBG(String text) {
-  Serial.print(text);;
-}
-#endif
-
 uint8_t BK8000L::decodeReceivedString(String receivedString) {
 #if defined DEBUG
   DBG(receivedString);
@@ -94,10 +85,11 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
             DBG(F("BT ADDRESS: ")); DBG(BT_ADDR);
 #endif
         }
-        if (receivedString[1] == 'P' && receivedString[2] == 'R' && receivedString[2] == '+'){
+        if (receivedString[1] == 'P' && receivedString[2] == 'R' && receivedString[3] == '+'){
 #if defined DEBUG
             DBG(F("SPP data received: ")); DBG(receivedString.substring(5));
 #endif
+	    receivedSppData=receivedString.substring(4);
 	} 
       }
       break;
@@ -193,7 +185,7 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
       }
       }
     break;
-    case 'O': //BT On
+    case 'O': //BT On or received OK
       {
         switch (receivedString[1]) {
         case 'N':
@@ -232,6 +224,7 @@ String BK8000L::returnBtModuleName(String receivedString) {
 uint8_t BK8000L::getNextEventFromBT() {
   char c;
   String receivedString = "";
+delay(100);
   while (btSerial -> available() > 0) {
     c = (btSerial -> read());
     if (c == 0xD) {
@@ -270,6 +263,10 @@ uint8_t BK8000L::sendAPTData(String cmd) {
   btSerial -> print(Command);
 }
 
+uint8_t BK8000L::aptLogin(){
+  BK8000L::getNextEventFromBT();
+BK8000L::sendAPTData("SPP8888");
+}
 
 uint8_t BK8000L::pairingInit() { //  pairing   AT+CA\r\n
   BK8000L::sendData(BK8000L_PAIRING_INIT);

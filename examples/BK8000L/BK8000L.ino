@@ -17,6 +17,8 @@ uint8_t PowerState;
 SoftwareSerial swSerial(7, 6); //rxPin, txPin, inverse_logic
 
 BK8000L BT(&swSerial, 5);
+//example for HW serial, do not forget to comment out "#define USE_SW_SERIAL" line in BK8000L/src/BK8000L.h
+//BK8000L BT(&Serial1, 5);
 
 void getInitStates() {
   BT.getName();
@@ -142,6 +144,7 @@ void loop() {
         Serial.println(F("getHFPstatus                 y"));
         Serial.println(F("StartModule                  z"));
         Serial.println(F("send APT data            A+data"));
+	Serial.println(F("APT login		       B"));
         break;
       case 'i':
         switch (BT.PowerState) {
@@ -269,10 +272,19 @@ void loop() {
           BT.sendAPTData(str);
         }
         break;
+      case 'B':
+	BT.aptLogin();
+	break;
     }
   }
 
   BT.getNextEventFromBT();
+
+  if (BT.receivedSppData!=""){
+    Serial.print("Received SPP data: ");
+    Serial.println(BT.receivedSppData);
+    BT.receivedSppData="";
+  }
 
   if (BTState != BT.BTState) {
     switch (BT.BTState) {

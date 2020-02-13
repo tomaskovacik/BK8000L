@@ -16,7 +16,7 @@
 #define BK8000L_h
 #include <Arduino.h>
 
-#define USE_SW_SERIAL 1
+#define USE_SW_SERIAL 0
 
 //#define DEBUG
 
@@ -86,6 +86,7 @@ class BK8000L
     uint8_t CallState=Disconnected;
     uint8_t MusicState=Idle;
     uint8_t PowerState=Off;
+    String receivedSppData;
 
     String CallerID;
     String BT_ADDR;
@@ -106,6 +107,7 @@ class BK8000L
 
     uint8_t sendData(String cmd);
     uint8_t sendAPTData(String cmd);
+    uint8_t aptLogin();
 
     uint8_t getNextEventFromBT();
 
