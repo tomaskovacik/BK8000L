@@ -70,7 +70,7 @@ void BK8000L::resetModule(){
  resetHigh();
 }
 
-uint8_t BK8000L::decodeReceivedString(String receivedString) {
+uint8_t BK8000L::decodeReceivedString(char receivedString[]) {
 #if defined DEBUG
   DBG(receivedString);
   DBG(F("\n"));
@@ -80,7 +80,7 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
       {
       PowerState=On;
         if (receivedString[1] == 'D' && receivedString[2] == ':') {
-            BT_ADDR = receivedString.substring(5);
+            //BT_ADDR = receivedString.substring(5);
 #if defined DEBUG
             DBG(F("BT ADDRESS: ")); DBG(BT_ADDR);
 #endif
@@ -89,7 +89,7 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
 #if defined DEBUG
             DBG(F("SPP data received: ")); DBG(receivedString.substring(5));
 #endif
-	    receivedSppData=receivedString.substring(4);
+	   // receivedSppData=receivedString.substring(4);
 	} 
       }
       break;
@@ -128,7 +128,7 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
           break;
         case 'R': //caller
           if (receivedString[2] == '-') CallState = IncomingCall;
-          CallerID = returnCallerID(receivedString);
+          //CallerID = returnCallerID(receivedString);
           break;
       }
       }
@@ -165,7 +165,7 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
       {
       PowerState=On;
         if (receivedString[1] == 'A' && receivedString[2] == ':') {//name
-          BT_NAME = BK8000L::returnBtModuleName(receivedString);
+//          BT_NAME = BK8000L::returnBtModuleName(receivedString);
         }
       }
       break;
@@ -175,11 +175,11 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
       switch (receivedString[1]) {
         case 'R': //outgoing call
           if (receivedString[2] == '-') CallState = OutgoingCall;
-          CallerID = returnCallerID(receivedString);
+    //      CallerID = returnCallerID(receivedString);
         break;
         case 'N':
           if (receivedString[2] == ':') {
-            BT_PIN = receivedString.substring(4);
+  //          BT_PIN = receivedString.substring(4);
           }
         break;
       }
@@ -198,47 +198,48 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
       }
     break;
     case 0xA: //\r
-	BK8000L::decodeReceivedString(receivedString.substring(1));
+//	BK8000L::decodeReceivedString(receivedString.substring(1));
     break;
     case 0x20: //space
-	BK8000L::decodeReceivedString(receivedString.substring(1));
+//	BK8000L::decodeReceivedString(receivedString.substring(1));
     break;
 }
 return 1;
 }
 
-String BK8000L::returnCallerID(String receivedString) {
-#if defined DEBUG
-	DBG(F("Calling: ")); DBG(receivedString.substring(4,(receivedString.length() - 2))); DBG(F("\n"));
-#endif
-	return receivedString.substring(4,(receivedString.length() - 2)); //start at 4 cose: IR-"+123456789" or PR-"+123456789" and one before end to remove " and \0
-}
+//String BK8000L::returnCallerID(String receivedString) {
+//#if defined DEBUG
+//	DBG(F("Calling: ")); DBG(receivedString.substring(4,(receivedString.length() - 2))); DBG(F("\n"));
+//#endif
+//	return receivedString.substring(4,(receivedString.length() - 2)); //start at 4 cose: IR-"+123456789" or PR-"+123456789" and one before end to remove " and \0
+//}
 
-String BK8000L::returnBtModuleName(String receivedString) {
-#if defined DEBUG
-	DBG(F("Bluetooth module name: ")); DBG(receivedString.substring(4)); DBG(F("\n"));
-#endif
-	return receivedString.substring(4);
-}
+//String BK8000L::returnBtModuleName(String receivedString) {
+//#if defined DEBUG
+//	DBG(F("Bluetooth module name: ")); DBG(receivedString.substring(4)); DBG(F("\n"));
+//#endif
+//	return receivedString.substring(4);
+//}
 
 uint8_t BK8000L::getNextEventFromBT() {
-  char c;
-  String receivedString = "";
+  static char c;
+  static char receivedString[16];
+  static uint8_t i = 0;
 delay(100);
   while (btSerial -> available() > 0) {
     c = (btSerial -> read());
     if (c == 0xD) {
-      if (receivedString == "") { //nothing before enter was received
+      if ( i = 0) { //nothing before enter was received
 #if defined DEBUG
         DBG(F("received only empty string\n running again myself...\n"));
 #endif
       }
-      receivedString = receivedString + c;
+      receivedString[i] = c;//put enter into array
       return decodeReceivedString(receivedString);
       break;
     }
     //append received buffer with received character
-    receivedString = receivedString + c;  // cose += c did not work ...
+    receivedString[i++] = c;  // cose += c did not work ...
   }
 }
 
@@ -265,19 +266,19 @@ uint8_t BK8000L::sendData(String cmd) {
 }
 
 uint8_t BK8000L::sendAPTData(String cmd) {
-  BK8000L::getNextEventFromBT();
+/*  BK8000L::getNextEventFromBT();
   String Command = "APT+" + cmd + "\r\n";
 #if defined DEBUG
   DBG(F("Sending APT "));DBG(Command);
 #endif
   delay(100);
   btSerial -> print(Command);
-  return checkResponce();
+  return checkResponce();*/
 }
 
 uint8_t BK8000L::aptLogin(){
-  BK8000L::getNextEventFromBT();
-  return BK8000L::sendAPTData("SPP8888");
+//  BK8000L::getNextEventFromBT();
+//  return BK8000L::sendAPTData("SPP8888");
 }
 
 uint8_t BK8000L::pairingInit() { //  pairing   AT+CA\r\n
@@ -322,11 +323,11 @@ uint8_t BK8000L::volumeDown() { //  volume down   AT+CL\r\n
 }
 
 uint8_t BK8000L::languageSwitch() { //  Multi-language switch   AT+CM\r\n
-  return BK8000L::sendData(BK8000L_LANGUAGE_SWITCH);
+  //return BK8000L::sendData(BK8000L_LANGUAGE_SWITCH);
 }
 
 uint8_t BK8000L::channelSwitch() { //  Channel switching (invalid)   AT+CO\r\n     to be tested
-  return BK8000L::sendData(BK8000L_CHANNEL_SWITCH);
+  //return BK8000L::sendData(BK8000L_CHANNEL_SWITCH);
 }
 
 uint8_t BK8000L::shutdownBT() { //  Shutdown  AT+CP\r\n
@@ -343,12 +344,12 @@ uint8_t BK8000L::openPhoneVoice() { //  Open phone VOICE  AT+CV\r\n
 }
 
 uint8_t BK8000L::memoryClear() { //  Memory clear  AT+CZ\r\n
-  return BK8000L::sendData(BK8000L_MEMORY_CLEAR);
+  //return BK8000L::sendData(BK8000L_MEMORY_CLEAR);
 }
 
 uint8_t BK8000L::languageSetNumber(uint8_t number) { //  Number:( 0-4 )  Set the number of multi-lingual   AT+CMM4\r\n
-  String command = BK8000L_LANGUAGE_SET_NUMBER + (String)number;
-  return BK8000L::sendData(command);
+  //String command = BK8000L_LANGUAGE_SET_NUMBER + (String)number;
+  //return BK8000L::sendData(command);
 }
 
 uint8_t BK8000L::musicTogglePlayPause() { //  Music Play / Pause  AT+MA\r\n
@@ -376,7 +377,7 @@ uint8_t BK8000L::musicRewind() { //  rewind  AT+MH\r\n     test how does this ex
 }
 
 uint8_t BK8000L::getName() { //  Query bluetooth name  AT+MN\r\n   NA:BK8000L\r\n  test this
-  return BK8000L::sendData(BK8000L_GET_NAME);
+  //return BK8000L::sendData(BK8000L_GET_NAME);
 }
 
 uint8_t BK8000L::getConnectionStatus() { //  Bluetooth connection status inquiry   AT+MO\rn  connection succeeded:" C1\r\n"no connection:"C0\r\n"
@@ -384,15 +385,15 @@ uint8_t BK8000L::getConnectionStatus() { //  Bluetooth connection status inquiry
 }
 
 uint8_t BK8000L::getPinCode() {           //  PIN Code query  AT+MP\r\n   PN:0000\r\n
-  return BK8000L::sendData(BK8000L_GET_PIN_CODE);
+ // return BK8000L::sendData(BK8000L_GET_PIN_CODE);
 }
 
 uint8_t BK8000L::getAddress() { //  Query bluetooth address   AT+MR\r\n   AD:111111111111\r\n
-  return BK8000L::sendData(BK8000L_GET_ADDRESS);
+  //return BK8000L::sendData(BK8000L_GET_ADDRESS);
 }
 
 uint8_t BK8000L::getSoftwareVersion() { //  Query software version  AT+MQ\r\n   XZX-V1.2\r\n
-  return BK8000L::sendData(BK8000L_GET_SOFTWARE_VERSION);
+  //return BK8000L::sendData(BK8000L_GET_SOFTWARE_VERSION);
 }
 
 uint8_t BK8000L::getMusicStatus() { //  Bluetooth playback status inquiry   AT+MV\r\n   Play: "MB\r\n", time out:"MA\r\n", disconnect:" M0\r\n"

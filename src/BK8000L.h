@@ -86,12 +86,12 @@ class BK8000L
     uint8_t CallState=Disconnected;
     uint8_t MusicState=Idle;
     uint8_t PowerState=Off;
-    String receivedSppData;
+    //String receivedSppData;
 
-    String CallerID;
-    String BT_ADDR;
-    String BT_NAME;
-    String BT_PIN;
+//    String CallerID;
+//  String BT_ADDR;
+//    String BT_NAME;
+//    String BT_PIN;
 
 #if defined(USE_SW_SERIAL)
 #if ARDUINO >= 100
@@ -146,9 +146,9 @@ class BK8000L
   private:
     uint8_t _reset;
 
-    String returnBtModuleName(String receivedString); //return module name between : and \0
-    String returnCallerID(String receivedString); //return number between ""
-    uint8_t decodeReceivedString(String receivedString);
+    //String returnBtModuleName(String receivedString); //return module name between : and \0
+//    String returnCallerID(String receivedString); //return number between ""
+    uint8_t decodeReceivedString(char receivedString[]);
     uint8_t checkResponce(void);
 #if defined DEBUG
     void DBG(String text);
