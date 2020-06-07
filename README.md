@@ -1,3 +1,22 @@
+#lite verision:
+
+standard lib: 
+Sketch uses 8734 bytes (27%) of program storage space. Maximum is 32256 bytes.
+Global variables use 351 bytes (17%) of dynamic memory, leaving 1697 bytes for local variables. Maximum is 2048 bytes.
+lite version:
+Sketch uses 6930 bytes (21%) of program storage space. Maximum is 32256 bytes.
+Global variables use 337 bytes (16%) of dynamic memory, leaving 1711 bytes for local variables. Maximum is 2048 bytes.
+
+Lite version did not have support for:
+CallerID
+BT_ADDR
+BT_NAME
+BT_PIN
+receivedSppData
+it did not use String for any variable.
+
+
+
 # arduino library for BK8000L 
 
 This directory contain all files needed to support A2DP bluetooth module based on Beken BK8000L chip.
