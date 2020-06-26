@@ -16,7 +16,7 @@
 #define BK8000L_h
 #include <Arduino.h>
 
-//#define USE_SW_SERIAL 0
+#define USE_SW_SERIAL 0
 
 //#define DEBUG
 
