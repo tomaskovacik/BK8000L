@@ -19,6 +19,8 @@ BK8000L|computer(USB2serial for example)
 
 ## arduino using software serial (UNO, nano..)
 
+Uncoment "#define USE_SW_SERIAL" in BK8000L.h to enable software serial support.
+
 BK8000L|computer(USB2serial for example)
 -------|-------
    RX  |  7 (1st parameter of SoftwareSerial in example)
