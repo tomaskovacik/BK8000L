@@ -275,11 +275,13 @@ uint8_t BK8000L::sendAPTData(String cmd) {
   delay(100);
   btSerial -> print(Command);
   return checkResponce();*/
+  return 0;
 }
 
 uint8_t BK8000L::aptLogin(){
 //  BK8000L::getNextEventFromBT();
 //  return BK8000L::sendAPTData("SPP8888");
+  return 0;
 }
 
 uint8_t BK8000L::pairingInit() { //  pairing   AT+CA\r\n
@@ -325,10 +327,12 @@ uint8_t BK8000L::volumeDown() { //  volume down   AT+CL\r\n
 
 uint8_t BK8000L::languageSwitch() { //  Multi-language switch   AT+CM\r\n
   //return BK8000L::sendData(BK8000L_LANGUAGE_SWITCH);
+  return 0;
 }
 
 uint8_t BK8000L::channelSwitch() { //  Channel switching (invalid)   AT+CO\r\n     to be tested
   //return BK8000L::sendData(BK8000L_CHANNEL_SWITCH);
+  return 0;
 }
 
 uint8_t BK8000L::shutdownBT() { //  Shutdown  AT+CP\r\n
@@ -346,6 +350,7 @@ uint8_t BK8000L::openPhoneVoice() { //  Open phone VOICE  AT+CV\r\n
 
 uint8_t BK8000L::memoryClear() { //  Memory clear  AT+CZ\r\n
   //return BK8000L::sendData(BK8000L_MEMORY_CLEAR);
+  return 0;
 }
 
 uint8_t BK8000L::languageSetNumber(uint8_t number) { //  Number:( 0-4 )  Set the number of multi-lingual   AT+CMM4\r\n
