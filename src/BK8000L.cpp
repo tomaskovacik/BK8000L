@@ -379,6 +379,7 @@ uint8_t BK8000L::musicRewind() { //  rewind  AT+MH\r\n     test how does this ex
 
 uint8_t BK8000L::getName() { //  Query bluetooth name  AT+MN\r\n   NA:BK8000L\r\n  test this
   //return BK8000L::sendData(BK8000L_GET_NAME);
+  return 0;
 }
 
 uint8_t BK8000L::getConnectionStatus() { //  Bluetooth connection status inquiry   AT+MO\rn  connection succeeded:" C1\r\n"no connection:"C0\r\n"
