@@ -351,6 +351,7 @@ uint8_t BK8000L::memoryClear() { //  Memory clear  AT+CZ\r\n
 uint8_t BK8000L::languageSetNumber(uint8_t number) { //  Number:( 0-4 )  Set the number of multi-lingual   AT+CMM4\r\n
   //String command = BK8000L_LANGUAGE_SET_NUMBER + (String)number;
   //return BK8000L::sendData(command);
+  return 0;
 }
 
 uint8_t BK8000L::musicTogglePlayPause() { //  Music Play / Pause  AT+MA\r\n
