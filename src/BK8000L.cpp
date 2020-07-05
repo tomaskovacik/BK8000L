@@ -266,23 +266,21 @@ uint8_t BK8000L::sendData(String cmd) {
   return checkResponce();
 }
 
-uint8_t BK8000L::sendAPTData(String cmd) {
-/*  BK8000L::getNextEventFromBT();
+/*uint8_t BK8000L::sendAPTData(String cmd) {
+  BK8000L::getNextEventFromBT();
   String Command = "APT+" + cmd + "\r\n";
 #if defined DEBUG
   DBG(F("Sending APT "));DBG(Command);
 #endif
   delay(100);
   btSerial -> print(Command);
-  return checkResponce();*/
-  return 0;
-}
+  return checkResponce();
+}*/
 
-uint8_t BK8000L::aptLogin(){
+/*uint8_t BK8000L::aptLogin(){
 //  BK8000L::getNextEventFromBT();
 //  return BK8000L::sendAPTData("SPP8888");
-  return 0;
-}
+}*/
 
 uint8_t BK8000L::pairingInit() { //  pairing   AT+CA\r\n
   BTState=Pairing;
@@ -325,15 +323,13 @@ uint8_t BK8000L::volumeDown() { //  volume down   AT+CL\r\n
   return BK8000L::sendData(BK8000L_VOLUME_DOWN);
 }
 
-uint8_t BK8000L::languageSwitch() { //  Multi-language switch   AT+CM\r\n
+/*uint8_t BK8000L::languageSwitch() { //  Multi-language switch   AT+CM\r\n
   //return BK8000L::sendData(BK8000L_LANGUAGE_SWITCH);
-  return 0;
-}
+}*/
 
-uint8_t BK8000L::channelSwitch() { //  Channel switching (invalid)   AT+CO\r\n     to be tested
+/*uint8_t BK8000L::channelSwitch() { //  Channel switching (invalid)   AT+CO\r\n     to be tested
   //return BK8000L::sendData(BK8000L_CHANNEL_SWITCH);
-  return 0;
-}
+}*/
 
 uint8_t BK8000L::shutdownBT() { //  Shutdown  AT+CP\r\n
   PowerState = ShutdownInProgress; 
@@ -348,16 +344,14 @@ uint8_t BK8000L::openPhoneVoice() { //  Open phone VOICE  AT+CV\r\n
   return BK8000L::sendData(BK8000L_OPEN_PHONE_VOICE);
 }
 
-uint8_t BK8000L::memoryClear() { //  Memory clear  AT+CZ\r\n
+/*uint8_t BK8000L::memoryClear() { //  Memory clear  AT+CZ\r\n
   //return BK8000L::sendData(BK8000L_MEMORY_CLEAR);
-  return 0;
-}
+}*/
 
-uint8_t BK8000L::languageSetNumber(uint8_t number) { //  Number:( 0-4 )  Set the number of multi-lingual   AT+CMM4\r\n
+/*uint8_t BK8000L::languageSetNumber(uint8_t number) { //  Number:( 0-4 )  Set the number of multi-lingual   AT+CMM4\r\n
   //String command = BK8000L_LANGUAGE_SET_NUMBER + (String)number;
   //return BK8000L::sendData(command);
-  return 0;
-}
+}*/
 
 uint8_t BK8000L::musicTogglePlayPause() { //  Music Play / Pause  AT+MA\r\n
   return BK8000L::sendData(BK8000L_MUSIC_TOGGLE_PLAY_PAUSE);
@@ -383,29 +377,25 @@ uint8_t BK8000L::musicRewind() { //  rewind  AT+MH\r\n     test how does this ex
   return BK8000L::sendData(BK8000L_MUSIC_REWIND);
 }
 
-uint8_t BK8000L::getName() { //  Query bluetooth name  AT+MN\r\n   NA:BK8000L\r\n  test this
+/*uint8_t BK8000L::getName() { //  Query bluetooth name  AT+MN\r\n   NA:BK8000L\r\n  test this
   //return BK8000L::sendData(BK8000L_GET_NAME);
-  return 0;
-}
+}*/
 
 uint8_t BK8000L::getConnectionStatus() { //  Bluetooth connection status inquiry   AT+MO\rn  connection succeeded:" C1\r\n"no connection:"C0\r\n"
   return BK8000L::sendData(BK8000L_GET_CONNECTION_STATUS);
 }
 
-uint8_t BK8000L::getPinCode() {           //  PIN Code query  AT+MP\r\n   PN:0000\r\n
+/*uint8_t BK8000L::getPinCode() {           //  PIN Code query  AT+MP\r\n   PN:0000\r\n
  // return BK8000L::sendData(BK8000L_GET_PIN_CODE);
-  return 0;
-}
+}*/
 
-uint8_t BK8000L::getAddress() { //  Query bluetooth address   AT+MR\r\n   AD:111111111111\r\n
+/*uint8_t BK8000L::getAddress() { //  Query bluetooth address   AT+MR\r\n   AD:111111111111\r\n
   //return BK8000L::sendData(BK8000L_GET_ADDRESS);
-  return 0;
-}
+}*/
 
-uint8_t BK8000L::getSoftwareVersion() { //  Query software version  AT+MQ\r\n   XZX-V1.2\r\n
+/*uint8_t BK8000L::getSoftwareVersion() { //  Query software version  AT+MQ\r\n   XZX-V1.2\r\n
   //return BK8000L::sendData(BK8000L_GET_SOFTWARE_VERSION);
-  return 0;
-}
+}*/
 
 uint8_t BK8000L::getMusicStatus() { //  Bluetooth playback status inquiry   AT+MV\r\n   Play: "MB\r\n", time out:"MA\r\n", disconnect:" M0\r\n"
   return BK8000L::sendData(BK8000L_MUSIC_GET_STATUS);

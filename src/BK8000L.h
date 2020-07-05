@@ -106,8 +106,8 @@ class BK8000L
     ~BK8000L();
 
     uint8_t sendData(String cmd);
-    uint8_t sendAPTData(String cmd);
-    uint8_t aptLogin();
+//    uint8_t sendAPTData(String cmd);
+//    uint8_t aptLogin();
 
     uint8_t getNextEventFromBT();
 
@@ -126,19 +126,19 @@ class BK8000L
     uint8_t shutdownBT();
     uint8_t switchInput();
     uint8_t openPhoneVoice();
-    uint8_t memoryClear();
-    uint8_t languageSetNumber(uint8_t number);
+//    uint8_t memoryClear();
+//    uint8_t languageSetNumber(uint8_t number);
     uint8_t musicTogglePlayPause();
     uint8_t musicStop();
     uint8_t musicNextTrack();
     uint8_t musicPreviousTrack();
     uint8_t musicFastForward();
     uint8_t musicRewind();
-    uint8_t getName();
+//    uint8_t getName();
     uint8_t getConnectionStatus();
-    uint8_t getPinCode();
-    uint8_t getAddress();
-    uint8_t getSoftwareVersion();
+//    uint8_t getPinCode();
+//    uint8_t getAddress();
+//    uint8_t getSoftwareVersion();
     uint8_t getMusicStatus();
     uint8_t getHFPStatus();
     void resetModule();

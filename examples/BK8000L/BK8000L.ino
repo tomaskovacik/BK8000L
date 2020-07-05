@@ -3,7 +3,8 @@
         (C) Tomas Kovacik [nail at nodomain dot sk]
         https://github.com/tomaskovacik/
 
-	example for F-6188 module library
+	example for lite F-6188 module library
+  will fit in 8k micro if compiled with LTO enabled
 */
 
 
@@ -21,11 +22,11 @@ BK8000L BT(&swSerial, 5);
 //BK8000L BT(&Serial1, 5);
 
 void getInitStates() {
-  BT.getName();
+  //BT.getName();
   BT.getConnectionStatus();
-  BT.getPinCode();
-  BT.getAddress();
-  BT.getSoftwareVersion();
+  //BT.getPinCode();
+  //BT.getAddress();
+  //BT.getSoftwareVersion();
   BT.getMusicStatus();
   BT.getHFPStatus();
 }
@@ -75,12 +76,12 @@ void loop() {
       case 'a':
         BT.volumeDown();
         break;
-      case 'b':
+      /*case 'b':
         BT.languageSwitch();
         break;
       case 'c':
         BT.channelSwitch();
-        break;
+        break;*/
       case 'd':
         BT.shutdownBT();
         break;
@@ -127,8 +128,8 @@ void loop() {
         Serial.println(F("send custom AT+command   f+CMD"));
         Serial.println(F("openPhoneVoice               g"));
         Serial.println(F("show info about module       i"));
-        Serial.println(F("memoryClear                  j"));
-        Serial.println(F("languageSetNumber        k+num"));
+        // Serial.println(F("memoryClear                  j"));
+        // Serial.println(F("languageSetNumber        k+num"));
         Serial.println(F("musicTogglePlayPause         l"));
         Serial.println(F("musicStop                    m"));
         Serial.println(F("musicNextTrack               n"));
@@ -137,23 +138,23 @@ void loop() {
         Serial.println(F("musicRewind                  r"));
         Serial.println(F("getName                      s"));
         Serial.println(F("getConnectioStatus           t"));
-        Serial.println(F("getPinCode                   u"));
-        Serial.println(F("getAddress                   v"));
-        Serial.println(F("getSoftwareVersion           w"));
+        // Serial.println(F("getPinCode                   u"));
+        // Serial.println(F("getAddress                   v"));
+        //Serial.println(F("getSoftwareVersion           w"));
         Serial.println(F("MusicGetStatus               x"));
         Serial.println(F("getHFPstatus                 y"));
         Serial.println(F("StartModule                  z"));
-        Serial.println(F("send APT data            A+data"));
-	Serial.println(F("APT login		       B"));
+        //Serial.println(F("send APT data            A+data"));
+        //Serial.println(F("APT login		       B"));
         break;
       case 'i':
         switch (BT.PowerState) {
           case (BT.On):
             getInitStates();
             Serial.println(F("Module ON"));
-//            Serial.print(F("NAME: ")); Serial.println(BT.BT_NAME);
-//            Serial.print(F("ADDR: ")); Serial.println(BT.BT_ADDR);
-//            Serial.print(F("PIN: ")); Serial.println(BT.BT_PIN);
+            //            Serial.print(F("NAME: ")); Serial.println(BT.BT_NAME);
+            //            Serial.print(F("ADDR: ")); Serial.println(BT.BT_ADDR);
+            //            Serial.print(F("PIN: ")); Serial.println(BT.BT_PIN);
             break;
           case (BT.Off):
             Serial.println(F("Module OFF"));
@@ -181,19 +182,19 @@ void loop() {
         switch (BT.CallState) {
           case (BT.IncomingCall):
             Serial.println(F("Incoming call:"));
-//            Serial.println(BT.CallerID);
+            //            Serial.println(BT.CallerID);
             break;
           case (BT.OutgoingCall):
             Serial.println(F("Dialing:"));
-//            Serial.println(BT.CallerID);
+            //            Serial.println(BT.CallerID);
             break;
           case (BT.CallInProgress):
             Serial.println(F("Calling:"));
-//            Serial.println(BT.CallerID);
+            //            Serial.println(BT.CallerID);
             break;
         }
         break;
-      case 'j':
+      /*case 'j':
         BT.memoryClear();
         break;
       case 'k':
@@ -210,7 +211,7 @@ void loop() {
           BT.languageSetNumber(b - 0x30);
           c = 0;
         }
-        break;
+        break;*/
       case 'l':
         BT.musicTogglePlayPause();
         break;
@@ -229,13 +230,13 @@ void loop() {
       case 'r':
         BT.musicRewind();
         break;
-      case 's':
+      /*case 's':
         BT.getName();
-        break;
+        break;*/
       case 't':
         BT.getConnectionStatus();
         break;
-      case 'u':
+      /*case 'u':
         BT.getPinCode();
         break;
       case 'v':
@@ -243,7 +244,7 @@ void loop() {
         break;
       case 'w':
         BT.getSoftwareVersion();
-        break;
+        break;*/
       case 'x':
         BT.getMusicStatus();
         break;
@@ -253,7 +254,7 @@ void loop() {
       case 'z':
         BT.resetModule();
         break;
-      case 'A':
+      /*case 'A':
         {
           Serial.read(); //read \r
           Serial.read(); //read \n
@@ -273,18 +274,18 @@ void loop() {
         }
         break;
       case 'B':
-	BT.aptLogin();
-	break;
+        BT.aptLogin();
+        break;*/
     }
   }
 
   BT.getNextEventFromBT();
 
-/*  if (BT.receivedSppData!=""){
-    Serial.print("Received SPP data: ");
-    Serial.println(BT.receivedSppData);
-    BT.receivedSppData="";
-  }*/
+  /*  if (BT.receivedSppData!=""){
+      Serial.print("Received SPP data: ");
+      Serial.println(BT.receivedSppData);
+      BT.receivedSppData="";
+    }*/
 
   if (BTState != BT.BTState) {
     switch (BT.BTState) {
@@ -305,15 +306,15 @@ void loop() {
     switch (BT.CallState) {
       case (BT.IncomingCall):
         Serial.println(F("Incoming call:"));
-//        Serial.println(BT.CallerID);
+        //        Serial.println(BT.CallerID);
         break;
       case (BT.OutgoingCall):
         Serial.println(F("Dialing:"));
-//        Serial.println(BT.CallerID);
+        //        Serial.println(BT.CallerID);
         break;
       case (BT.CallInProgress):
         Serial.println(F("Calling:"));
-//        Serial.println(BT.CallerID);
+        //        Serial.println(BT.CallerID);
         break;
     }
     CallState = BT.CallState;
@@ -336,9 +337,9 @@ void loop() {
       case (BT.On):
         getInitStates();
         Serial.println(F("Module ON"));
-//        Serial.print(F("NAME: ")); Serial.println(BT.BT_NAME);
-//        Serial.print(F("ADDR: ")); Serial.println(BT.BT_ADDR);
-//        Serial.print(F("PIN: ")); Serial.println(BT.BT_PIN);
+        //        Serial.print(F("NAME: ")); Serial.println(BT.BT_NAME);
+        //        Serial.print(F("ADDR: ")); Serial.println(BT.BT_ADDR);
+        //        Serial.print(F("PIN: ")); Serial.println(BT.BT_PIN);
         break;
       case (BT.Off):
         Serial.println(F("Module OFF"));
@@ -347,5 +348,3 @@ void loop() {
     PowerState = BT.PowerState;
   }
 }
-
-
