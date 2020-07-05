@@ -229,7 +229,7 @@ delay(100);
   while (btSerial -> available() > 0) {
     c = (btSerial -> read());
     if (c == 0xD) {
-      if ( i = 0) { //nothing before enter was received
+      if ( i == 0) { //nothing before enter was received
 #if defined DEBUG
         DBG(F("received only empty string\n running again myself...\n"));
 #endif
