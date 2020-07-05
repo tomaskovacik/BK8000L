@@ -243,7 +243,7 @@ delay(100);
 }
 
 uint8_t BK8000L::checkResponce(void){
-  uint8_t timeout=500;//500ms -- datasheet did not stated any timeout for "OK" responce, so I give him 500ms
+  uint16_t timeout=500;//500ms -- datasheet did not stated any timeout for "OK" responce, so I give him 500ms
   while (!getNextEventFromBT() && timeout > 0)
   {
     timeout--;
