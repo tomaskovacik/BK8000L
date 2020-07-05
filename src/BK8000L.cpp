@@ -241,6 +241,7 @@ delay(100);
     //append received buffer with received character
     receivedString[i++] = c;  // cose += c did not work ...
   }
+  return decodeReceivedString(receivedString);
 }
 
 uint8_t BK8000L::checkResponce(void){
