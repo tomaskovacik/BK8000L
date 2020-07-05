@@ -395,6 +395,7 @@ uint8_t BK8000L::getAddress() { //  Query bluetooth address   AT+MR\r\n   AD:111
 
 uint8_t BK8000L::getSoftwareVersion() { //  Query software version  AT+MQ\r\n   XZX-V1.2\r\n
   //return BK8000L::sendData(BK8000L_GET_SOFTWARE_VERSION);
+  return 0;
 }
 
 uint8_t BK8000L::getMusicStatus() { //  Bluetooth playback status inquiry   AT+MV\r\n   Play: "MB\r\n", time out:"MA\r\n", disconnect:" M0\r\n"
