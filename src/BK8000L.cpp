@@ -391,6 +391,7 @@ uint8_t BK8000L::getPinCode() {           //  PIN Code query  AT+MP\r\n   PN:000
 
 uint8_t BK8000L::getAddress() { //  Query bluetooth address   AT+MR\r\n   AD:111111111111\r\n
   //return BK8000L::sendData(BK8000L_GET_ADDRESS);
+  return 0;
 }
 
 uint8_t BK8000L::getSoftwareVersion() { //  Query software version  AT+MQ\r\n   XZX-V1.2\r\n
