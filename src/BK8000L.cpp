@@ -387,6 +387,7 @@ uint8_t BK8000L::getConnectionStatus() { //  Bluetooth connection status inquiry
 
 uint8_t BK8000L::getPinCode() {           //  PIN Code query  AT+MP\r\n   PN:0000\r\n
  // return BK8000L::sendData(BK8000L_GET_PIN_CODE);
+  return 0;
 }
 
 uint8_t BK8000L::getAddress() { //  Query bluetooth address   AT+MR\r\n   AD:111111111111\r\n
