@@ -144,9 +144,9 @@ resetModule(); //reset module, for example to start it again
 
 # Handling responce from module
 
-As far as getNextEventFromBT() is called periodicaly, (it is called in all of functions mentioned above, just to handle responce to send command ASAP) library handle responce like this:
+As far as getNextEventFromBT() is called periodically, the library will update state variables based on the response from module. Function getNextEventFromBT() is called at the end of all functions mentioned above to handle response sent from the bluetooth module asap.
 
-library has its own variables, which are set/updated when data are received from module:
+Library has its own variables, which are set/updated when data are received from module:
 ```c
 String BT_ADDR; // updated after getAddress() is called
 
