@@ -77,7 +77,7 @@ sendData(String cmd); //construct string of AT+cmd and send it to serial port
 
 sendAPTData(String cmd); //construct string of APT+cmd and send it to serial port 
 
-getNextEventFromBT(); //parse data send from module and send internal variales, call this periodicaly, to parse data received from module ASAP
+getNextEventFromBT(); //parse data send from module and set internal variales, call this periodicaly to parse data received from module ASAP
 
 PairingInit(); //initialize pairing mode
 
