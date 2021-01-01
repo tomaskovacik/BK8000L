@@ -17,6 +17,7 @@
 #include <Arduino.h>
 
 #define USE_SW_SERIAL
+#define BK8002
 
 //#define DEBUG
 
@@ -52,7 +53,22 @@
 #define BK8000L_MUSIC_GET_STATUS "MV "       //  Bluetooth playback status inquiry   AT+MV\r\n   Play: "MB\r\n", time out:"MA\r\n", disconnect:" M0\r\n"   
 #define BK8000L_GET_HFP_STATUS "MY"          //  Bluetooth inquiry HFP status  AT+MY\r\n   disconnect:"M0\r\n", connection:"M1\r\n", Caller: "M2\r\n", Outgoing: "M3\r\n", calling:"M4\r\n"  
 
-
+#ifdef BK8002
+#define BK8002_SET_VOLUME "VOL" //Set the volume level AT+VOLx\r\n x=(0-15)
+#define BK8002_BLUETOOTH_MODE "MNBT" //Bluetooth mode AT+MNBT\r\n
+#define BK8002_SDCARD_MODE "MNMP3" //TF mode AT+MNMP3\r\n
+#define BK8002_AUX_MODE "MNAUX" //AUX mode AT+MNAUX\r\n
+#define BK8002_FM_MODE "MNFM" //FM mode AT+MNFM\r\n
+#define BK8002_SDCARD_REPEAT_ALL "MPM0" //Loop all ( TF Mode) AT+MPM0\r\n
+#define BK8002_SDCARD_REPEAT_ONE "MPM1" //Single loop playback ( TF Mode) AT+MPM1\r\n
+#define BK8002_SDCARD_PLAY_SONG "SMP" //Play selection ( TF Mode) AT+SMPXXXX\r\n xxxx :( 0000-9999 ); (" 0000 "On behalf of the 1 first)
+#define BK8002_GET_FM_CHANNEL_NUMBER "MRFM" //Inquire FM Channel number ( FM Mode) AT+MRFM\r\n; responce: FM99.8\r\n
+#define BK8002_GET_SDCARD_SONG_NUMBER "MRMP3" //Inquire MP3 Song number ( TF Mode); AT+MRMP3\r\n; responce: MP3x\r\n
+#define BK8002_GET_SDCARD_NUMBER_OF_SONGS "MMMP3" //Inquire MP3 Number of songs ( TF Mode); COM+MMMP3\r\n ; responce: MMPx\r\n (x=number of songs)
+#define BK8002_GET_SDCARD_PLAY_MODE "MPMC" //Inquire MP3 Play mode ( TF Mode); AT+MPMC\r\n; responce: repreatall: PLAY_ALL\r\n; repeate one: PLAY_ONE\r\n
+#define BK8002_GET_CURRENT_VOLUME "MVOL" //Query current volume; AT+MVOL\r\n ; responce: VOLx\r\n ( x : Represents the volume level)
+#define BK8002_GET_CURRENT_MODE "MM" //Query current mode; AT+MM\r\n; responce: Bluetooth: BT_MODE\r\n TF : MP3_MODE\r\n FM : FM_MODE\r\n AUX : AUX_MODE\r\n
+#endif
 
 #if defined(USE_SW_SERIAL)
 #if ARDUINO >= 100
@@ -81,6 +97,22 @@ class BK8000L
       Pairing,
       ShutdownInProgress
     };
+
+#ifdef BK8002
+    enum modes
+    {
+	    BT,
+	    FM,
+	    SDCARD,
+	    AUX,
+	    ALL,
+	    ONE
+    };
+    uint8_t playMode; //all or one 
+    uint8_t mode; //BT,FM,AUX,SDCARD
+    uint16_t songNumber;
+    String CurrentFrequency; //send fro BT module as 99.8 so lets have it as string for now
+#endif
 
     uint8_t BTState=Disconnected;
     uint8_t CallState=Disconnected;
@@ -142,6 +174,23 @@ class BK8000L
     uint8_t getMusicStatus();
     uint8_t getHFPStatus();
     void resetModule();
+
+#ifdef BK8002
+   uint8_t setVolume(uint8_t volume); //BK8002_SET_VOLUME "VOL" //Set the volume level AT+VOLx\r\n x=(0-15)
+   uint8_t setBluetoothMode(); //BK8002_BLUETOOTH_MODE "MNBT" //Bluetooth mode AT+MNBT\r\n
+   uint8_t setSdcardMode(); //BK8002_SDCARD_MODE "MNMP3" //TF mode AT+MNMP3\r\n
+   uint8_t setAUXMode(); //BK8002_AUX_MODE "MNAUX" //AUX mode AT+MNAUX\r\n
+   uint8_t setFMMode(); //BK8002_FM_MODE "MNFM" //FM mode AT+MNFM\r\n
+   uint8_t setSdcardRepeatAll(); //BK8002_SDCARD_REPEAT_ALL "MPM0" //Loop all ( TF Mode) AT+MPM0\r\n
+   uint8_t setSdcardRepeaetOne(); //BK8002_SDCARD_REPEAT_ONE "MPM1" //Single loop playback ( TF Mode) AT+MPM1\r\n
+   uint8_t setSdcardPlaSong(uint16_t songNumber); //BK8002_SDCARD_PLAY_SONG "SMP" //Play selection ( TF Mode) AT+SMPXXXX\r\n xxxx :( 0000-9999 ); (" 0000 "On behalf of the 1 first)
+   uint8_t getFMChannelNumer(); //BK8002_GET_FM_CHANNEL_NUMBER "MRFM" //Inquire FM Channel number ( FM Mode) AT+MRFM\r\n; responce: FM99.8\r\n
+   uint8_t getSdcardSongNumber(); //BK8002_GET_SDCARD_SONG_NUMBER "MRMP3" //Inquire MP3 Song number ( TF Mode); AT+MRMP3\r\n; responce: MP3x\r\n
+   uint8_t getSdcardNumberOfSongs(); //BK8002_GET_SDCARD_NUMBER_OF_SONGS "MMMP3" //Inquire MP3 Number of songs ( TF Mode); COM+MMMP3\r\n ; responce: MMPx\r\n (x=number of songs)
+   uint8_t getSdcardPlayMode(); //BK8002_GET_SDCARD_PLAY_MODE "MPMC" //Inquire MP3 Play mode ( TF Mode); AT+MPMC\r\n; responce: repreatall: PLAY_ALL\r\n; repeate one: PLAY_ONE\r\n
+   uint8_t getCurrentVolume(); //BK8002_GET_CURRENT_VOLUME "MVOL" //Query current volume; AT+MVOL\r\n ; responce: VOLx\r\n ( x : Represents the volume level)
+   uint8_t getCurrentMode(); //BK8002_GET_CURRENT_MODE "MM" //Query current mode; AT+MM\r\n; responce: Bluetooth: BT_MODE\r\n TF : MP3_MODE\r\n FM : FM_MODE\r\n AUX : AUX_MODE\r\n
+#endif
 
   private:
     uint8_t _reset;

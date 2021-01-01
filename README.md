@@ -1,8 +1,9 @@
 # arduino library for BK8000L 
 
-This directory contain all files needed to support A2DP bluetooth module based on Beken BK8000L chip.
+This directory contain all files needed to support A2DP bluetooth module based on Beken BK8000L chip and also untested support for BK8002 based modules.
 
 BK8000L (F-6188 module at least) have AT command control support, supported commands are described <a href="https://github.com/tomaskovacik/kicad-library/tree/master/library/datasheet/F-6188_BK8000L">here</a>
+
 
 # how to connect BK8000L
 
