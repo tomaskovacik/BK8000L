@@ -90,9 +90,21 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
             DBG(F("SPP data received: ")); DBG(receivedString.substring(5));
 #endif
 	    receivedSppData=receivedString.substring(4);
-	} 
+	}
+#ifdef BK8002
+	if (memcmp(&receivedString[0], "AUX_MODE", 8) == 0)
+          mode = AUX;
+#endif
       }
       break;
+#ifdef BK8002
+    case 'B':
+      {
+        if (memcmp(&receivedString[0], "BT_MODE", 7) == 0)
+          mode = BT;
+      }
+      break;
+#endif
     case 'C':
       {
       PowerState=On;
@@ -116,6 +128,18 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
       }
       }
       break;
+#ifdef BK8002
+    case 'F':
+      {
+        if (receivedString[1] == 'M') {
+          if (receivedString[2] != '_' ) //song number
+            CurrentFrequency = receivedString.substring(2);//.toInt();//FM freq
+	  if (memcmp(&receivedString[0], "FM_MODE", 7) == 0)
+            mode = FM; //FM_MODE
+        }
+      }
+      break;
+#endif
     case 'I':// connection info
       {
       PowerState=On;
@@ -158,6 +182,16 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
         case '4':
           CallState = CallInProgress;
           break;
+#ifdef BK8002
+          case 'P':
+            if (receivedString[2] == '3') {
+              if (receivedString[3] != '_' ) //song number
+                songNumber = receivedString.substring(3).toInt();//this should give as just song number, if it can handle endline at the end of string
+              if (memcmp(&receivedString[0], "MP3_MODE", 8) == 0)
+                mode = SDCARD;
+            }
+            break;
+#endif
       }
       }
       break;
@@ -182,6 +216,16 @@ uint8_t BK8000L::decodeReceivedString(String receivedString) {
             BT_PIN = receivedString.substring(4);
           }
         break;
+#ifdef BK8002
+        case 'L':
+          if ( receivedString[2] == 'A' && receivedString[3] == 'Y' && receivedString[2] == '_' ) {
+            if (receivedString[2] == 'A' && receivedString[3] == 'L' && receivedString[2] == 'L')
+              playMode = ALL;
+            if (receivedString[2] == 'O' && receivedString[3] == 'N' && receivedString[2] == 'E')
+              playMode = ONE;
+          }
+        break;
+#endif
       }
       }
     break;
@@ -403,3 +447,62 @@ uint8_t BK8000L::getHFPStatus() { //Bluetooth inquiry HFP status  AT+MY\r\n   di
   return BK8000L::sendData(BK8000L_GET_HFP_STATUS);
 }
 
+#ifdef BK8002
+uint8_t BK8000L::setVolume(uint8_t volume){ //BK8002_SET_VOLUME "VOL" //Set the volume level AT+VOLx\r\n x=(0-15)
+  String command = BK8002_SET_VOLUME + (String)volume;
+  return BK8000L::sendData(command);
+}
+
+uint8_t BK8000L::setBluetoothMode(){ //BK8002_BLUETOOTH_MODE "MNBT" //Bluetooth mode AT+MNBT\r\n
+  return BK8000L::sendData(BK8002_BLUETOOTH_MODE);
+}
+
+uint8_t BK8000L::setSdcardMode(){ //BK8002_SDCARD_MODE "MNMP3" //TF mode AT+MNMP3\r\n
+  return BK8000L::sendData(BK8002_SDCARD_MODE);
+}
+
+uint8_t BK8000L::setAUXMode(){ //BK8002_AUX_MODE "MNAUX" //AUX mode AT+MNAUX\r\n
+  return BK8000L::sendData(BK8002_AUX_MODE);
+}
+
+uint8_t BK8000L::setFMMode(){ //BK8002_FM_MODE "MNFM" //FM mode AT+MNFM\r\n
+  return BK8000L::sendData(BK8002_FM_MODE);
+}
+
+uint8_t BK8000L::setSdcardRepeatAll(){ //BK8002_SDCARD_REPEAT_ALL "MPM0" //Loop all ( TF Mode) AT+MPM0\r\n
+  return BK8000L::sendData(BK8002_SDCARD_REPEAT_ALL);
+}
+
+uint8_t BK8000L::setSdcardRepeaetOne(){ //BK8002_SDCARD_REPEAT_ONE "MPM1" //Single loop playback ( TF Mode) AT+MPM1\r\n
+  return BK8000L::sendData(BK8002_SDCARD_REPEAT_ONE);
+}
+
+uint8_t BK8000L::setSdcardPlaSong(uint16_t songNumber){ //BK8002_SDCARD_PLAY_SONG "SMP" //Play selection ( TF Mode) AT+SMPXXXX\r\n xxxx :( 0000-9999 ); (" 0000 "On behalf of the 1 first)
+  String command = BK8002_SDCARD_PLAY_SONG + (String)songNumber;
+  return BK8000L::sendData(command);
+}
+
+uint8_t BK8000L::getFMChannelNumer(){ //BK8002_GET_FM_CHANNEL_NUMBER "MRFM" //Inquire FM Channel number ( FM Mode) AT+MRFM\r\n; responce: FM99.8\r\n
+  return BK8000L::sendData(BK8002_GET_FM_CHANNEL_NUMBER);
+}
+
+uint8_t BK8000L::getSdcardSongNumber(){ //BK8002_GET_SDCARD_SONG_NUMBER "MRMP3" //Inquire MP3 Song number ( TF Mode); AT+MRMP3\r\n; responce: MP3x\r\n
+  return BK8000L::sendData(BK8002_GET_SDCARD_SONG_NUMBER);
+}
+
+uint8_t BK8000L::getSdcardNumberOfSongs(){ //BK8002_GET_SDCARD_NUMBER_OF_SONGS "MMMP3" //Inquire MP3 Number of songs ( TF Mode); COM+MMMP3\r\n ; responce: MMPx\r\n (x=number of songs)
+  return BK8000L::sendData(BK8002_GET_SDCARD_NUMBER_OF_SONGS);
+}
+
+uint8_t BK8000L::getSdcardPlayMode(){ //BK8002_GET_SDCARD_PLAY_MODE "MPMC" //Inquire MP3 Play mode ( TF Mode); AT+MPMC\r\n; responce: repreatall: PLAY_ALL\r\n; repeate one: PLAY_ONE\r\n
+  return BK8000L::sendData(BK8002_GET_SDCARD_PLAY_MODE);
+}
+
+uint8_t BK8000L::getCurrentVolume(){ //BK8002_GET_CURRENT_VOLUME "MVOL" //Query current volume; AT+MVOL\r\n ; responce: VOLx\r\n ( x : Represents the volume level)
+  return BK8000L::sendData(BK8002_GET_CURRENT_VOLUME);
+}
+
+uint8_t BK8000L::getCurrentMode(){ //BK8002_GET_CURRENT_MODE "MM" //Query current mode; AT+MM\r\n; responce: Bluetooth: BT_MODE\r\n TF : MP3_MODE\r\n FM : FM_MODE\r\n AUX : AUX_MODE\r\n
+  return BK8000L::sendData(BK8002_GET_CURRENT_MODE);
+}
+#endif
