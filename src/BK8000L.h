@@ -17,7 +17,7 @@
 #include <Arduino.h>
 
 #define USE_SW_SERIAL
-#define BK8002
+//#define BK8002
 
 //#define DEBUG
 
